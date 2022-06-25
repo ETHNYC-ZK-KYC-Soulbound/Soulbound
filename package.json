@@ -20,7 +20,7 @@
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "2.0.6",
     "@nomiclabs/hardhat-waffle": "2.0.3",
-    "@openzeppelin/contracts": "^4.3.1",
+    "@openzeppelin/contracts": "^4.6.0",
     "@tsconfig/recommended": "1.0.1",
     "@typechain/ethers-v5": "7.0.1",
     "@typechain/hardhat": "2.3.0",
@@ -51,6 +51,7 @@
     "*.*{ts,js}": "eslint -c .eslintrc.json"
   },
   "dependencies": {
-    "@chainlink/contracts": "^0.4.1"
+    "@chainlink/contracts": "^0.4.1",
+    "prettier-plugin-solidity": "^1.0.0-beta.19"
   }
 }
