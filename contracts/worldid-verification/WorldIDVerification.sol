@@ -7,13 +7,13 @@ import "./WorldIDRegistry.sol";
 contract WorldIDVerification is WorldIDRegistry, MainVerification {
     constructor(
         address _worldId,
-        address[] memory _initialVerifiers,
+        address[] memory _initialApprovers,
         address _admin,
         string memory _tokenURI
-    ) MainVerification(_initialVerifiers, _admin, _tokenURI) WorldIDRegistry(_worldId) {}
+    ) MainVerification(_initialApprovers, _admin, _tokenURI) WorldIDRegistry(_worldId) {}
 
     function addSubmission(
-        address[] memory verifiers,
+        address[] memory approvers,
         string[] memory cids,
         uint256 root,
         uint256 nullifierHash,
@@ -21,6 +21,6 @@ contract WorldIDVerification is WorldIDRegistry, MainVerification {
     ) external {
         WorldIDRegistry._verify(root, nullifierHash, proof);
 
-        _addSubmission(verifiers, cids);
+        _addSubmission(approvers, cids);
     }
 }

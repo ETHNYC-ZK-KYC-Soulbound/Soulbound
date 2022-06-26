@@ -4,14 +4,16 @@ async function main() {
 	let deployer, addr1, addr2, addr3, addrs
 	;[deployer, addr1, addr2, addr3, ...addrs] = await ethers.getSigners()
 
-	console.log(deployer.address, addr1.address)
-
-	const Contract = await hre.ethers.getContractFactory('WorldIDVerification')
+	const Contract = await hre.ethers.getContractFactory('PoHVerification')
 	const contract = await Contract.deploy(
-		addr1.address,
-		[addr2.address, addr3.address],
-		addr3.address,
-		'https://google.com'
+		'0x4023395C3Bb30cb6288d4eD722369C2A510d377A',
+		[
+			process.env.VERIFIER_ONE_ADDRESS,
+			process.env.VERIFIER_TWO_ADDRESS,
+			process.env.VERIFIER_THREE_ADDRESS
+		],
+		process.env.VERIFIER_ONE_ADDRESS,
+		'https://example.org'
 	)
 
 	const tx = contract.deployTransaction

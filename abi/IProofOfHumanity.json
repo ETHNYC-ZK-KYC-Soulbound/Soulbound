@@ -1,0 +1,3 @@
+[
+  "function isRegistered(address) view returns (bool)"
+]

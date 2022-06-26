@@ -5,6 +5,7 @@ import "@nomiclabs/hardhat-waffle";
 import "@nomiclabs/hardhat-ethers";
 import "@typechain/hardhat";
 import "hardhat-deploy";
+import "hardhat-abi-exporter";
 
 // Process Env Variables
 import * as dotenv from "dotenv";
@@ -41,8 +42,17 @@ const config: HardhatUserConfig = {
     },
   },
 
+	abiExporter: {
+		path: './abi',
+		runOnCompile: true,
+		clear: true,
+		flat: true,
+		spacing: 2,
+		pretty: true
+	},
+
   etherscan: {
-    // apiKey: ETHERSCAN_API_KEY ? ETHERSCAN_API_KEY : "",
+    apiKey: process.env.ETHERSCAN,
   },
 
   solidity: {

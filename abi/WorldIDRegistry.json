@@ -1,0 +1,7 @@
+[
+  "constructor(address)",
+  "error AlreadyAssociated()",
+  "error InvalidNullifier()",
+  "error Unauthorized()",
+  "function isAddressAssociated(address) view returns (bool)"
+]
