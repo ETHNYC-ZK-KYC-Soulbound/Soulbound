@@ -15,7 +15,7 @@ const PK_MUMBAI = process.env.PK_MUMBAI;
 const PK_GNOSIS = process.env.PK_GNOSIS;
 
 const config: HardhatUserConfig = {
-  defaultNetwork: "sokol",
+  // defaultNetwork: "sokol",
 
   // hardhat-deploy
   namedAccounts: {
