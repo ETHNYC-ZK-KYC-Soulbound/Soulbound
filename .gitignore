@@ -10,3 +10,4 @@ artifacts
 
 .DS_Store
 dist
+soljson*
