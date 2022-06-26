@@ -6,6 +6,7 @@
     "build": "npm run compile && npx tsc",
     "compile": "npx hardhat compile --force",
     "deploy": "npx hardhat deploy --network mumbai",
+    "deploy:sokol": "npx hardhat deploy --network sokol",
     "lint": "eslint --cache . && npm run lint:sol",
     "lint:ts": "eslint -c .eslintrc.json --ext \"**/*.ts\" \"**/*.test.ts\"",
     "lint:sol": "solhint 'contracts/**/*.sol'",

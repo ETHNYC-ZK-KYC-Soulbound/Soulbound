@@ -11,9 +11,10 @@ import * as dotenv from "dotenv";
 dotenv.config({ path: __dirname + "/.env" });
 
 const PK_MUMBAI = process.env.PK_MUMBAI;
+const PK_GNOSIS = process.env.PK_GNOSIS;
 
 const config: HardhatUserConfig = {
-  defaultNetwork: "mumbai",
+  defaultNetwork: "sokol",
 
   // hardhat-deploy
   namedAccounts: {
@@ -27,6 +28,16 @@ const config: HardhatUserConfig = {
       accounts: PK_MUMBAI ? [PK_MUMBAI] : [],
       chainId: 80001,
       url: 'https://rpc.ankr.com/polygon_mumbai', // https://rpc-mumbai.matic.today
+    },
+    sokol: {
+      accounts: PK_GNOSIS ? [PK_GNOSIS] : [],
+      chainId: 77,
+      url: 'https://sokol.poa.network/',
+    },
+    gnosis: {
+      accounts: PK_GNOSIS ? [PK_GNOSIS] : [],
+      chainId: 100,
+      url: ' https://rpc.gnosischain.com/',
     },
   },
 
