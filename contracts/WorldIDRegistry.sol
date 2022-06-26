@@ -61,7 +61,7 @@ contract WorldIDRegistry {
         _owners[owner] = nullifierHash;
     }
 
-    function isAddressAssociated(address owner) public view return (memory bool) {
+    function isAddressAssociated(address owner) public view returns (bool) {
         return _owners[owner] != address(0);
     }
 }
