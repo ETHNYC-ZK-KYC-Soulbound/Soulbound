@@ -1,0 +1,5 @@
+{
+  "solidity.defaultCompiler": "localNodeModule",
+  "solidity.compileUsingRemoteVersion": "v0.8.0+commit.c7dfd78e",
+  "solidity.compileUsingLocalVersion": "/Users/jwp/Projects/ETHNYC/OurApp/Soulbound/soljson-v0.8.0+commit.c7dfd78e.js"
+}

@@ -6,8 +6,33 @@ import "@semaphore-protocol/contracts/base/SemaphoreCore.sol";
 import "@semaphore-protocol/contracts/base/SemaphoreGroups.sol";
 
 /// @dev Modified custom contract of Semaphore
+/// @dev From https://github.com/semaphore-protocol/semaphore/blob/main/contracts/Semaphore.sol
 contract GroupManager is ISemaphore, SemaphoreCore, SemaphoreGroups {
+    /// @dev Gets a group id and returns the group admin address.
+    mapping(uint256 => address) public groupAdmins;
 
+    /// @dev Checks if the group admin is the transaction sender.
+    /// @param groupId: Id of the group.
+    modifier onlyGroupAdmin(uint256 groupId) {
+        require(groupAdmins[groupId] == _msgSender(), "Semaphore: caller is not the group admin");
+        _;
+    }
+
+    /// @dev Checks if there is a verifier for the given tree depth.
+    /// @param depth: Depth of the tree.
+    modifier onlySupportedDepth(uint8 depth) {
+        require(address(verifiers[depth]) != address(0), "Semaphore: tree depth is not supported");
+        _;
+    }
+
+    /// @dev Initializes the Semaphore verifiers used to verify the user's ZK proofs.
+    /// @param _verifiers: List of Semaphore verifiers (address and related Merkle tree depth).
+    constructor(Verifier[] memory _verifiers) {
+        for (uint8 i = 0; i < _verifiers.length; i++) {
+            verifiers[_verifiers[i].merkleTreeDepth] = IVerifier(_verifiers[i].contractAddress);
+        }
+    }
+    
     /// @dev Creates a new group. Only the admin will be able to add or remove members.
     /// @dev Common (default) parameters: treeDepth = 20, zeroValue = BigInt(0).
     /// @param groupId: Id of the group.
@@ -25,6 +50,13 @@ contract GroupManager is ISemaphore, SemaphoreCore, SemaphoreGroups {
         groupAdmins[groupId] = admin;
 
         emit GroupAdminUpdated(groupId, address(0), admin);
+    }
+
+    /// @dev See {ISemaphore-updateGroupAdmin}.
+    function updateGroupAdmin(uint256 groupId, address newAdmin) external override onlyGroupAdmin(groupId) {
+        groupAdmins[groupId] = newAdmin;
+
+        emit GroupAdminUpdated(groupId, _msgSender(), newAdmin);
     }
 
     /// @dev Adds a new member to an existing group.

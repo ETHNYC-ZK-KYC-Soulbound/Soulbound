@@ -51,9 +51,7 @@ contract WorldIDRegistry {
         // Address can only be associated once
         if (_callerHash != 0 && _callerHash != nullifierHash)
             revert AlreadyAssociated();
-
-        _worldId.verifyProof(
-            root,
+        if (_owners[msg.sender] != 0) revert AlreadyAssociated();
             _groupId,
             abi.encodePacked(msg.sender).hashToField(),
             nullifierHash,
