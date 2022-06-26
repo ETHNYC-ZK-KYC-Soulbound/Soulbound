@@ -1,0 +1,105 @@
+@startuml
+
+enum Status {
+NULL
+PENDING
+REJECTED
+VERIFIED
+}
+
+struct Submission {
+status
+verificationDate
+index
+}
+
+abstract MainVerification {
+verifiers
+_submissions
+
+_addSubmission(ipfs_cids)
+activeVerifiers()
+}
+
+class PoHVerification {
+proofOfHumanity
+
+addSubmission(ipfs_cids)
+}
+
+interface IProofOfHumanity {
+isRegistered(human)
+}
+
+class PoHProfilesBridge {}
+
+class PoHProfilesBridge {}
+
+class WorldIDVerification {
+addSubmission(ipfs_cids, worldIDParams)
+}
+
+class WorldIDRegistry {
+hashToAddress
+addressToHash
+
+_verify(params)
+}
+
+interface IWorldID {
+verifyProof(params)
+}
+
+class WorldID {}
+
+class GroupManager {
+groupAdmins
+createGroup(...)
+updateGroupAdmin(...)
+addMember(...)
+removeMember(...)
+}
+class Semphora {}
+
+class ProofToken {
+mint(to, proof)
+totalSupply()
+tokenURI(tokenID)
+}
+class SBT {
+override _transfer(from, to, id)
+override approve(to, id)
+override setApprovalForAll(operator, approved)
+}
+class OZAccessControl {}
+class OZERC721 {}
+
+
+
+MainVerification <|-d- PoHVerification
+MainVerification <|-d- WorldIDVerification
+
+WorldIDVerification -d-|> WorldIDRegistry
+
+PoHVerification -d-> IProofOfHumanity
+PoHProfilesBridge .u.|> IProofOfHumanity
+
+WorldIDRegistry -d-> IWorldID
+WorldID .u.|> IWorldID
+
+MainVerification -r-> Submission
+Submission -r-> Status
+
+MainVerification --> GroupManager
+MainVerification --> ProofToken
+
+ProofToken --|> SBT
+SBT --|> OZERC721
+
+GroupManager --|> Semphora
+
+OZAccessControl <|-- MainVerification
+
+
+
+@enduml
