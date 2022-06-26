@@ -7,7 +7,6 @@ import "@semaphore-protocol/contracts/base/SemaphoreGroups.sol";
 
 /// @dev Modified custom contract of Semaphore
 contract GroupManager is ISemaphore, SemaphoreCore, SemaphoreGroups {
-    constructor() {}
 
     /// @dev Creates a new group. Only the admin will be able to add or remove members.
     /// @dev Common (default) parameters: treeDepth = 20, zeroValue = BigInt(0).
@@ -31,10 +30,11 @@ contract GroupManager is ISemaphore, SemaphoreCore, SemaphoreGroups {
     /// @dev Adds a new member to an existing group.
     /// @param groupId: Id of the group.
     /// @param identityCommitment: New identity commitment.
-    function addMember(
-        uint256 groupId,
-        uint256 identityCommitment
-    ) external override onlyGroupAdmin(groupId) {
+    function addMember(uint256 groupId, uint256 identityCommitment)
+        external
+        override
+        onlyGroupAdmin(groupId)
+    {
         _addMember(groupId, identityCommitment);
     }
 
@@ -50,6 +50,11 @@ contract GroupManager is ISemaphore, SemaphoreCore, SemaphoreGroups {
         uint256[] calldata proofSiblings,
         uint8[] calldata proofPathIndices
     ) external override onlyGroupAdmin(groupId) {
-        _removeMember(groupId, identityCommitment, proofSiblings, proofPathIndices);
+        _removeMember(
+            groupId,
+            identityCommitment,
+            proofSiblings,
+            proofPathIndices
+        );
     }
 }

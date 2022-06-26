@@ -2,13 +2,14 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "./Soulbound.sol";
 
 interface IProofToken {
     function mint(address to, string memory proof) external;
 }
 
-contract ProofToken is SBT, IProofToken {
+contract ProofToken is SBT, IProofToken, Ownable {
     using Counters for Counters.Counter;
 
     address public mainContract;
@@ -33,7 +34,7 @@ contract ProofToken is SBT, IProofToken {
     function mint(address to, string memory proof) external onlyMainContract {
         _tokenCounter.increment();
         uint256 tokenId = _tokenCounter.current();
-        
+
         _safeMint(to, tokenId);
         proofs[tokenId] = proof;
     }

@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "./ProofToken.sol";
+// import "./GroupManager.sol";
 
 enum Status {
     NULL,
@@ -18,18 +20,14 @@ struct Submission {
     uint64 index; // Index of a submission.
 }
 
-// struct Verifier {
-//     address addr;
-//     string publicKey;
-// }
-
-contract Verification is AccessControl {
+abstract contract MainVerification is Ownable, AccessControl {
     using Counters for Counters.Counter;
 
     bytes32 public constant VERIFIER = keccak256("VERIFIER");
     bytes32 public constant VERIFIERS_ADMIN = keccak256("VERIFIERS_ADMIN");
 
-    IProofToken public proofToken;
+    IProofToken private _proofToken;
+    address public groupManager;
 
     Counters.Counter private _submissionCounter;
 
@@ -56,7 +54,11 @@ contract Verification is AccessControl {
         address verifier
     );
 
-    constructor(address[] memory _initialVerifiers, address _admin, string memory _tokenURI) {
+    constructor(
+        address[] memory _initialVerifiers,
+        address _admin,
+        string memory _tokenURI
+    ) {
         _grantRole(VERIFIERS_ADMIN, _admin);
         _setRoleAdmin(VERIFIER, VERIFIERS_ADMIN);
 
@@ -67,8 +69,10 @@ contract Verification is AccessControl {
         }
 
         ProofToken _nftContract = new ProofToken(_tokenURI);
-        proofToken = IProofToken((_nftContract));
+        _proofToken = IProofToken(_nftContract);
 
+        // GroupManager _groupManager = new GroupManager();
+        // groupManager = address(_groupManager);
     }
 
     function addVerifier(address newVerifier) public onlyRole(VERIFIERS_ADMIN) {
@@ -76,12 +80,9 @@ contract Verification is AccessControl {
         _grantRole(VERIFIER, newVerifier);
     }
 
-    function addSubmission(address[] memory verifiers, string[] memory cids)
-        public
+    function _addSubmission(address[] memory verifiers, string[] memory cids)
+        internal
     {
-        // already checked worldcoin
-        // should be called only by worldcoin registry?
-
         require(
             verifiers.length == cids.length,
             "Not same amount of verifiers and cids"
@@ -126,7 +127,7 @@ contract Verification is AccessControl {
 
         // mint nft
 
-        proofToken.mint(submitter, proof);
+        _proofToken.mint(submitter, proof);
 
         emit Verified(
             submitter,
