@@ -9,14 +9,14 @@ contract PoHVerification is MainVerification {
 
     constructor(
         address proofOfHumanity_,
-        address[] memory _initialVerifiers,
+        address[] memory _initialApprovers,
         address _admin,
         string memory _tokenURI
-    ) MainVerification(_initialVerifiers, _admin, _tokenURI) {
+    ) MainVerification(_initialApprovers, _admin, _tokenURI) {
         _proofOfHumanity = IProofOfHumanity(proofOfHumanity_);
     }
 
-    function addSubmission(address[] memory verifiers, string[] memory cids)
+    function addSubmission(address[] memory approvers, string[] memory cids)
         external
     {
         require(
@@ -24,7 +24,7 @@ contract PoHVerification is MainVerification {
             "Caller is not registered in PoH"
         );
 
-        _addSubmission(verifiers, cids);
+        _addSubmission(approvers, cids);
     }
 
     function proofOfHumanity() external view returns (address) {

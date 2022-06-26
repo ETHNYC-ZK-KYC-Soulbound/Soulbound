@@ -11,7 +11,7 @@ enum Status {
     NULL,
     PENDING,
     REJECTED,
-    VERIFIED
+    APPROVED
 }
 
 struct Submission {
@@ -23,8 +23,8 @@ struct Submission {
 abstract contract MainVerification is Ownable, AccessControl {
     using Counters for Counters.Counter;
 
-    bytes32 public constant VERIFIER = keccak256("VERIFIER");
-    bytes32 public constant VERIFIERS_ADMIN = keccak256("VERIFIERS_ADMIN");
+    bytes32 public constant APPROVER = keccak256("APPROVER");
+    bytes32 public constant APPROVERS_ADMIN = keccak256("APPROVERS_ADMIN");
 
     IProofToken private _proofToken;
     address public groupManager;
@@ -33,7 +33,7 @@ abstract contract MainVerification is Ownable, AccessControl {
 
     // Address that has been granted the role of verifier.
     // Could be revoked and they still would be here.
-    address[] private _verifiers;
+    address[] private _approvers;
 
     mapping(address => Submission) private _submissions;
 
@@ -41,56 +41,53 @@ abstract contract MainVerification is Ownable, AccessControl {
     mapping(address => mapping(address => string)) private _cids;
 
     event AddSubmission(address submitter, uint256 index, uint256 date);
-    event Verified(
+    event Approved(
         address submitter,
         uint256 index,
         uint256 date,
-        address verifier
+        address approver
     );
     event Rejected(
         address submitter,
         uint256 index,
         uint256 date,
-        address verifier
+        address approver
     );
 
     constructor(
-        address[] memory _initialVerifiers,
+        address[] memory _initialApprovers,
         address _admin,
         string memory _tokenURI
     ) {
-        _grantRole(VERIFIERS_ADMIN, _admin);
-        _setRoleAdmin(VERIFIER, VERIFIERS_ADMIN);
+        _grantRole(APPROVERS_ADMIN, _admin);
+        _setRoleAdmin(APPROVER, APPROVERS_ADMIN);
 
-        _verifiers = _initialVerifiers;
+        _approvers = _initialApprovers;
 
-        for (uint256 i = 0; i < _initialVerifiers.length; i++) {
-            _grantRole(VERIFIER, _initialVerifiers[i]);
+        for (uint256 i = 0; i < _initialApprovers.length; i++) {
+            _grantRole(APPROVER, _initialApprovers[i]);
         }
 
         ProofToken _nftContract = new ProofToken(_tokenURI);
         _proofToken = IProofToken(_nftContract);
-
-        // GroupManager _groupManager = new GroupManager();
-        // groupManager = address(_groupManager);
     }
 
-    function addVerifier(address newVerifier) public onlyRole(VERIFIERS_ADMIN) {
-        _verifiers.push(newVerifier);
-        _grantRole(VERIFIER, newVerifier);
+    function addApprover(address newApprover) public onlyRole(APPROVERS_ADMIN) {
+        _approvers.push(newApprover);
+        _grantRole(APPROVER, newApprover);
     }
 
-    function _addSubmission(address[] memory verifiers, string[] memory cids)
+    function _addSubmission(address[] memory approvers, string[] memory cids)
         internal
     {
         require(
-            verifiers.length == cids.length,
-            "Not same amount of verifiers and cids"
+            approvers.length == cids.length,
+            "Not same amount of approvers and cids"
         );
 
-        for (uint256 i = 0; i < verifiers.length; i++) {
-            address verifier = verifiers[i];
-            if (hasRole(VERIFIER, verifier))
+        for (uint256 i = 0; i < approvers.length; i++) {
+            address verifier = approvers[i];
+            if (hasRole(APPROVER, verifier))
                 _cids[msg.sender][verifier] = cids[i];
         }
 
@@ -116,20 +113,18 @@ abstract contract MainVerification is Ownable, AccessControl {
         return _submission;
     }
 
-    function verify(address submitter, string memory proof)
+    function approveAndBindProof(address submitter, string memory proof)
         public
-        onlyRole(VERIFIER)
+        onlyRole(APPROVER)
     {
         Submission storage _submission = _checkedPendingSubmission(submitter);
 
-        _submission.status = Status.VERIFIED;
+        _submission.status = Status.APPROVED;
         _submission.verificationDate = uint64(block.timestamp);
-
-        // mint nft
 
         _proofToken.mint(submitter, proof);
 
-        emit Verified(
+        emit Approved(
             submitter,
             _submission.index,
             block.timestamp,
@@ -137,7 +132,7 @@ abstract contract MainVerification is Ownable, AccessControl {
         );
     }
 
-    function reject(address submitter) public onlyRole(VERIFIER) {
+    function reject(address submitter) public onlyRole(APPROVER) {
         Submission storage _submission = _checkedPendingSubmission(submitter);
 
         _submission.status = Status.REJECTED;
@@ -153,7 +148,7 @@ abstract contract MainVerification is Ownable, AccessControl {
     function getCID(address submitter)
         public
         view
-        onlyRole(VERIFIER)
+        onlyRole(APPROVER)
         returns (string memory)
     {
         string memory cid = _cids[submitter][msg.sender];
@@ -165,8 +160,8 @@ abstract contract MainVerification is Ownable, AccessControl {
     }
 
     function activeVerifiersAmount() public view returns (uint256 amount) {
-        for (uint256 i = 0; i < _verifiers.length; i++) {
-            if (hasRole(VERIFIER, _verifiers[i])) amount++;
+        for (uint256 i = 0; i < _approvers.length; i++) {
+            if (hasRole(APPROVER, _approvers[i])) amount++;
         }
     }
 
@@ -177,9 +172,9 @@ abstract contract MainVerification is Ownable, AccessControl {
 
         uint256 j;
 
-        for (uint256 i = 0; i < _verifiers.length; i++) {
-            if (hasRole(VERIFIER, _verifiers[i])) {
-                addrs[j] = _verifiers[i];
+        for (uint256 i = 0; i < _approvers.length; i++) {
+            if (hasRole(APPROVER, _approvers[i])) {
+                addrs[j] = _approvers[i];
                 j++;
             }
         }
