@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "./ProofToken.sol";
 
 enum Status {
     NULL,
@@ -27,6 +28,8 @@ contract Verification is AccessControl {
 
     bytes32 public constant VERIFIER = keccak256("VERIFIER");
     bytes32 public constant VERIFIERS_ADMIN = keccak256("VERIFIERS_ADMIN");
+
+    IProofToken public proofToken;
 
     Counters.Counter private _submissionCounter;
 
@@ -53,7 +56,7 @@ contract Verification is AccessControl {
         address verifier
     );
 
-    constructor(address[] memory _initialVerifiers, address _admin) {
+    constructor(address[] memory _initialVerifiers, address _admin, string memory _tokenURI) {
         _grantRole(VERIFIERS_ADMIN, _admin);
         _setRoleAdmin(VERIFIER, VERIFIERS_ADMIN);
 
@@ -62,6 +65,10 @@ contract Verification is AccessControl {
         for (uint256 i = 0; i < _initialVerifiers.length; i++) {
             _grantRole(VERIFIER, _initialVerifiers[i]);
         }
+
+        ProofToken _nftContract = new ProofToken(_tokenURI);
+        proofToken = IProofToken((_nftContract));
+
     }
 
     function addVerifier(address newVerifier) public onlyRole(VERIFIERS_ADMIN) {
@@ -117,9 +124,9 @@ contract Verification is AccessControl {
         _submission.status = Status.VERIFIED;
         _submission.verificationDate = uint64(block.timestamp);
 
-        // do sth with the proof
-
         // mint nft
+
+        proofToken.mint(submitter, proof);
 
         emit Verified(
             submitter,
