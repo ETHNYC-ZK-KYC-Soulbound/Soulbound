@@ -10,7 +10,10 @@ contract WorldIDVerification is WorldIDRegistry, MainVerification {
         address[] memory _initialApprovers,
         address _admin,
         string memory _tokenURI
-    ) MainVerification(_initialApprovers, _admin, _tokenURI) WorldIDRegistry(_worldId) {}
+    )
+        MainVerification(_initialApprovers, _admin, _tokenURI)
+        WorldIDRegistry(_worldId)
+    {}
 
     function addSubmission(
         address[] memory approvers,
