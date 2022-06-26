@@ -7,6 +7,8 @@ import "@semaphore-protocol/contracts/base/SemaphoreGroups.sol";
 
 /// @dev Modified custom contract of Semaphore
 contract GroupManager is ISemaphore, SemaphoreCore, SemaphoreGroups {
+    constructor() {}
+
     /// @dev Creates a new group. Only the admin will be able to add or remove members.
     /// @dev Common (default) parameters: treeDepth = 20, zeroValue = BigInt(0).
     /// @param groupId: Id of the group.

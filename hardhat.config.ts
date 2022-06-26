@@ -10,10 +10,7 @@ import "hardhat-deploy";
 import * as dotenv from "dotenv";
 dotenv.config({ path: __dirname + "/.env" });
 
-const PK = process.env.PK;
-const PK_MAINNET = process.env.PK_MAINNET;
-const ALCHEMY_ID = process.env.ALCHEMY_ID;
-const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;
+const PK_MUMBAI = process.env.PK_MUMBAI;
 
 const config: HardhatUserConfig = {
   defaultNetwork: "hardhat",
@@ -26,26 +23,15 @@ const config: HardhatUserConfig = {
   },
 
   networks: {
-    hardhat: {
-      forking: {
-        url: `https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_ID}`,
-        blockNumber: 14000000,
-      }
-    },
-    goerli: {
-      accounts: PK ? [PK] : [],
-      chainId: 5,
-      url: `https://eth-goerli.alchemyapi.io/v2/${ALCHEMY_ID}`,
-    },
-    mainnet: {
-      accounts: PK_MAINNET ? [PK_MAINNET] : [],
-      chainId: 1,
-      url: `https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_ID}`,
+    mumbai: {
+      accounts: PK_MUMBAI ? [PK_MUMBAI] : [],
+      chainId: 80001,
+      url: 'wss://rpc-mumbai.matic.today', // https://rpc-mumbai.matic.today
     },
   },
 
   etherscan: {
-    apiKey: ETHERSCAN_API_KEY ? ETHERSCAN_API_KEY : "",
+    // apiKey: ETHERSCAN_API_KEY ? ETHERSCAN_API_KEY : "",
   },
 
   solidity: {
