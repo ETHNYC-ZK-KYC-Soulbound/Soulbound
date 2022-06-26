@@ -8,9 +8,6 @@ import "@semaphore-protocol/contracts/base/SemaphoreGroups.sol";
 /// @dev Modified custom contract of Semaphore
 /// @dev From https://github.com/semaphore-protocol/semaphore/blob/main/contracts/Semaphore.sol
 contract GroupManager is ISemaphore, SemaphoreCore, SemaphoreGroups {
-    /// @dev Gets a tree depth and returns its verifier address.
-    mapping(uint8 => IVerifier) public verifiers;
-
     /// @dev Gets a group id and returns the group admin address.
     mapping(uint256 => address) public groupAdmins;
 
@@ -65,10 +62,11 @@ contract GroupManager is ISemaphore, SemaphoreCore, SemaphoreGroups {
     /// @dev Adds a new member to an existing group.
     /// @param groupId: Id of the group.
     /// @param identityCommitment: New identity commitment.
-    function addMember(
-        uint256 groupId,
-        uint256 identityCommitment
-    ) external override onlyGroupAdmin(groupId) {
+    function addMember(uint256 groupId, uint256 identityCommitment)
+        external
+        override
+        onlyGroupAdmin(groupId)
+    {
         _addMember(groupId, identityCommitment);
     }
 
@@ -84,28 +82,11 @@ contract GroupManager is ISemaphore, SemaphoreCore, SemaphoreGroups {
         uint256[] calldata proofSiblings,
         uint8[] calldata proofPathIndices
     ) external override onlyGroupAdmin(groupId) {
-        _removeMember(groupId, identityCommitment, proofSiblings, proofPathIndices);
-    }
-
-    /// @dev See {ISemaphore-verifyProof}.
-    function verifyProof(
-        uint256 groupId,
-        bytes32 signal,
-        uint256 nullifierHash,
-        uint256 externalNullifier,
-        uint256[8] calldata proof
-    ) external override {
-        uint256 root = getRoot(groupId);
-        uint8 depth = getDepth(groupId);
-
-        require(depth != 0, "Semaphore: group does not exist");
-
-        IVerifier verifier = verifiers[depth];
-
-        _verifyProof(signal, root, nullifierHash, externalNullifier, proof, verifier);
-
-        _saveNullifierHash(nullifierHash);
-
-        emit ProofVerified(groupId, signal);
+        _removeMember(
+            groupId,
+            identityCommitment,
+            proofSiblings,
+            proofPathIndices
+        );
     }
 }
