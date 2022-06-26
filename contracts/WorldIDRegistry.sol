@@ -44,11 +44,12 @@ contract WorldIDRegistry {
         if (_registry[nullifierHash] != address(0)) revert InvalidNullifier();
 
         // Address can only be associated once
-        if (_owners[msg.sender] != 0) revert AlreadyAssociated();
+        if (_callerHash != 0 && _callerHash != nullifierHash)
+            revert AlreadyAssociated();
 
-        worldId.verifyProof(
+        _worldId.verifyProof(
             root,
-            groupId,
+            _groupId,
             abi.encodePacked(msg.sender).hashToField(),
             nullifierHash,
             abi.encodePacked(address(this)).hashToField(),

@@ -13,7 +13,7 @@ dotenv.config({ path: __dirname + "/.env" });
 const PK_MUMBAI = process.env.PK_MUMBAI;
 
 const config: HardhatUserConfig = {
-  defaultNetwork: "hardhat",
+  defaultNetwork: "mumbai",
 
   // hardhat-deploy
   namedAccounts: {
@@ -26,7 +26,7 @@ const config: HardhatUserConfig = {
     mumbai: {
       accounts: PK_MUMBAI ? [PK_MUMBAI] : [],
       chainId: 80001,
-      url: 'wss://rpc-mumbai.matic.today', // https://rpc-mumbai.matic.today
+      url: 'https://rpc.ankr.com/polygon_mumbai', // https://rpc-mumbai.matic.today
     },
   },
 
@@ -37,7 +37,7 @@ const config: HardhatUserConfig = {
   solidity: {
     compilers: [
       {
-        version: "0.8.15",
+        version: "0.8.10",
         settings: {
           optimizer: { enabled: true, runs: 200 },
         },

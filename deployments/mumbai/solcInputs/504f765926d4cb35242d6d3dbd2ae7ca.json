@@ -1,0 +1,41 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/interfaces/IWorldID.sol": {
+      "content": "//SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ninterface IWorldID {\n    /// @notice Reverts if the zero-knowledge proof is invalid.\n    /// @param root The of the Merkle tree\n    /// @param groupId The id of the Semaphore group\n    /// @param signalHash A keccak256 hash of the Semaphore signal\n    /// @param nullifierHash The nullifier hash\n    /// @param externalNullifierHash A keccak256 hash of the external nullifier\n    /// @param proof The zero-knowledge proof\n    /// @dev  Note that a double-signaling check is not included here, and should be carried by the caller.\n    function verifyProof(\n        uint256 root,\n        uint256 groupId,\n        uint256 signalHash,\n        uint256 nullifierHash,\n        uint256 externalNullifierHash,\n        uint256[8] calldata proof\n    ) external view;\n}"
+    },
+    "contracts/WorldIDRegistry.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\nimport \"./interfaces/IWorldID.sol\";\nimport \"./libraries/ByteHasher.sol\";\n\ncontract WorldIDRegistry {\n    using ByteHasher for bytes;\n\n    /// @dev The WorldID instance that will be used for managing groups and verifying proofs\n    IWorldID internal immutable worldId;\n\n    /// @dev The ID of the Semaphore group \"World ID\" (always 1)\n    uint256 internal immutable groupId = 1;\n\n    /// @notice Thrown when trying to update the airdrop amount without being the manager\n    error Unauthorized();\n\n    /// @notice Thrown when attempting to reuse a nullifier\n    error InvalidNullifier();\n\n    /// @notice Thrown when attempting to associate an address again\n    error AlreadyAssociated();\n\n    /// @dev Maps from nullitiferHash to address. Used to prevent double-signaling\n    mapping(uint256 => address) internal _registry;\n\n    /// @dev Reverse lookup of _registry\n    mapping(address => uint256) internal _owners;\n\n    /// @notice Deploys a WorldIDAirdrop instance\n    /// @param _worldId The WorldID instance that will manage groups and verify proofs\n    /// @dev worldId is take from `https://developer.worldcoin.org/api/v1/contracts`\n    constructor(IWorldID _worldId) {\n        worldId = _worldId;\n    }\n\n    function register(\n        uint256 root,\n        uint256 nullifierHash,\n        uint256[8] calldata proof\n    ) public {\n        // Prevent double-signaling\n        if (_registry[nullifierHash] != address(0)) revert InvalidNullifier();\n\n        // Address can only be associated once\n        if (_owners[msg.sender] != 0) revert AlreadyAssociated();\n\n        worldId.verifyProof(\n            root,\n            groupId,\n            abi.encodePacked(msg.sender).hashToField(),\n            nullifierHash,\n            abi.encodePacked(address(this)).hashToField(),\n            proof\n        );\n\n        // Assign nullfierHash to owner (and vice versa)\n        _registry[nullifierHash] = msg.sender;\n        _owners[msg.sender] = nullifierHash;\n    }\n\n    function isAddressAssociated(address owner) public view returns (bool) {\n        return _owners[owner] != 0;\n    }\n}\n"
+    },
+    "contracts/libraries/ByteHasher.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.10;\n\nlibrary ByteHasher {\n    /// @dev Creates a keccak256 hash of a bytestring.\n    /// @param value The bytestring to hash\n    /// @return The hash of the specified value\n    /// @dev `>> 8` makes sure that the result is included in our field\n    function hashToField(bytes memory value) internal pure returns (uint256) {\n        return uint256(keccak256(abi.encodePacked(value))) >> 8;\n    }\n}"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}

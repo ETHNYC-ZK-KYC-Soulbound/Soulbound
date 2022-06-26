@@ -1,0 +1,187 @@
+{
+  "address": "0x4bf6ed3eE50a8dC875A8c65E504c8A0CbDF72623",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_worldId_",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "AlreadyAssociated",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidNullifier",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "Unauthorized",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "isAddressAssociated",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0x8063abf13536acc0a57be14a1e01235fb4eff8165ea84fa0b4250492ce3fa48e",
+  "receipt": {
+    "to": null,
+    "from": "0x2bB7019f40a84Cc7272311D1fcf01b118471d7fB",
+    "contractAddress": "0x4bf6ed3eE50a8dC875A8c65E504c8A0CbDF72623",
+    "transactionIndex": 6,
+    "gasUsed": "100028",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000002000000000000000008000002000000000000000000000000000000000000000000000000000800000000000000000040100000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000040000000004000000000000000000001000000000000000000000000000000100000000000000000000000000000000000000800000008000000000000000000000000100000",
+    "blockHash": "0xbf9f1515434b227fd4dbb81505fab2cf8faba480187d592bcdd80c5272640441",
+    "transactionHash": "0x8063abf13536acc0a57be14a1e01235fb4eff8165ea84fa0b4250492ce3fa48e",
+    "logs": [
+      {
+        "transactionIndex": 6,
+        "blockNumber": 26912430,
+        "transactionHash": "0x8063abf13536acc0a57be14a1e01235fb4eff8165ea84fa0b4250492ce3fa48e",
+        "address": "0x0000000000000000000000000000000000001010",
+        "topics": [
+          "0x4dfe1bbbcf077ddc3e01291eea2d5c70c2b422b415d95645b9adcfd678cb1d63",
+          "0x0000000000000000000000000000000000000000000000000000000000001010",
+          "0x0000000000000000000000002bb7019f40a84cc7272311d1fcf01b118471d7fb",
+          "0x000000000000000000000000c275dc8be39f50d12f66b6a63629c39da5bae5bd"
+        ],
+        "data": "0x000000000000000000000000000000000000000000000000000c701f6d37d22000000000000000000000000000000000000000000000000001cb10b6ada8ec6d000000000000000000000000000000000000000000000534b79ea4cedb6b8d2f00000000000000000000000000000000000000000000000001bea09740711a4d000000000000000000000000000000000000000000000534b7ab14ee48a35f4f",
+        "logIndex": 14,
+        "blockHash": "0xbf9f1515434b227fd4dbb81505fab2cf8faba480187d592bcdd80c5272640441"
+      }
+    ],
+    "blockNumber": 26912430,
+    "cumulativeGasUsed": "1294278",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [
+    "0xABB70f7F39035586Da57B3c8136035f87AC0d2Aa"
+  ],
+  "solcInputHash": "0f4fe0f002ddb440f586d0e7b02c5061",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.10+commit.fc410830\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_worldId_\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"AlreadyAssociated\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidNullifier\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"Unauthorized\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"isAddressAssociated\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"constructor\":{\"details\":\"worldId is take from `https://developer.worldcoin.org/api/v1/contracts`\",\"params\":{\"_worldId_\":\"The WorldID instance that will manage groups and verify proofs\"}}},\"stateVariables\":{\"_addressToHash\":{\"details\":\"Reverse lookup of _hashToAddress\"},\"_groupId\":{\"details\":\"The ID of the Semaphore group \\\"World ID\\\" (always 1)\"},\"_hashToAddress\":{\"details\":\"Maps from nullitiferHash to address. Used to prevent double-signaling\"},\"_worldId\":{\"details\":\"The WorldID instance that will be used for managing groups and verifying proofs\"}},\"version\":1},\"userdoc\":{\"errors\":{\"AlreadyAssociated()\":[{\"notice\":\"Thrown when attempting to associate an address again\"}],\"InvalidNullifier()\":[{\"notice\":\"Thrown when attempting to reuse a nullifier\"}],\"Unauthorized()\":[{\"notice\":\"Thrown when trying to update the airdrop amount without being the manager\"}]},\"kind\":\"user\",\"methods\":{\"constructor\":{\"notice\":\"Deploys a WorldIDAirdrop instance\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/worldid-verification/WorldIDRegistry.sol\":\"WorldIDRegistry\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"contracts/libraries/ByteHasher.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.10;\\n\\nlibrary ByteHasher {\\n    /// @dev Creates a keccak256 hash of a bytestring.\\n    /// @param value The bytestring to hash\\n    /// @return The hash of the specified value\\n    /// @dev `>> 8` makes sure that the result is included in our field\\n    function hashToField(bytes memory value) internal pure returns (uint256) {\\n        return uint256(keccak256(abi.encodePacked(value))) >> 8;\\n    }\\n}\\n\",\"keccak256\":\"0x225f0627ac21d07df35533f605936035d74aa0f05a632cb8d150d3af50408cd0\",\"license\":\"MIT\"},\"contracts/worldid-verification/IWorldID.sol\":{\"content\":\"//SPDX-License-Identifier: MIT\\npragma solidity ^0.8.0;\\n\\ninterface IWorldID {\\n    /// @notice Reverts if the zero-knowledge proof is invalid.\\n    /// @param root The of the Merkle tree\\n    /// @param groupId The id of the Semaphore group\\n    /// @param signalHash A keccak256 hash of the Semaphore signal\\n    /// @param nullifierHash The nullifier hash\\n    /// @param externalNullifierHash A keccak256 hash of the external nullifier\\n    /// @param proof The zero-knowledge proof\\n    /// @dev  Note that a double-signaling check is not included here, and should be carried by the caller.\\n    function verifyProof(\\n        uint256 root,\\n        uint256 groupId,\\n        uint256 signalHash,\\n        uint256 nullifierHash,\\n        uint256 externalNullifierHash,\\n        uint256[8] calldata proof\\n    ) external view;\\n}\\n\",\"keccak256\":\"0xe11efc148e8d801984535c26f001becc01aff7e1c375f01196436e50764751f1\",\"license\":\"MIT\"},\"contracts/worldid-verification/WorldIDRegistry.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.0;\\n\\nimport \\\"./IWorldID.sol\\\";\\nimport \\\"../libraries/ByteHasher.sol\\\";\\n\\ncontract WorldIDRegistry {\\n    using ByteHasher for bytes;\\n\\n    /// @dev The WorldID instance that will be used for managing groups and verifying proofs\\n    IWorldID internal immutable _worldId;\\n\\n    /// @dev The ID of the Semaphore group \\\"World ID\\\" (always 1)\\n    uint256 internal immutable _groupId = 1;\\n\\n    /// @notice Thrown when trying to update the airdrop amount without being the manager\\n    error Unauthorized();\\n\\n    /// @notice Thrown when attempting to reuse a nullifier\\n    error InvalidNullifier();\\n\\n    /// @notice Thrown when attempting to associate an address again\\n    error AlreadyAssociated();\\n\\n    /// @dev Maps from nullitiferHash to address. Used to prevent double-signaling\\n    mapping(uint256 => address) internal _hashToAddress;\\n\\n    /// @dev Reverse lookup of _hashToAddress\\n    mapping(address => uint256) internal _addressToHash;\\n\\n    /// @notice Deploys a WorldIDAirdrop instance\\n    /// @param _worldId_ The WorldID instance that will manage groups and verify proofs\\n    /// @dev worldId is take from `https://developer.worldcoin.org/api/v1/contracts`\\n    constructor(address _worldId_) {\\n        _worldId = IWorldID(_worldId_);\\n    }\\n\\n    function _verify(\\n        uint256 root,\\n        uint256 nullifierHash,\\n        uint256[8] calldata proof\\n    ) internal {\\n        address _hashOwner = _hashToAddress[nullifierHash];\\n\\n        // Prevent double-signaling\\n        if (_hashOwner != address(0) && _hashOwner != msg.sender)\\n            revert InvalidNullifier();\\n\\n        uint256 _callerHash = _addressToHash[msg.sender];\\n\\n        // Address can only be associated once\\n        if (_callerHash != 0 && _callerHash != nullifierHash)\\n            revert AlreadyAssociated();\\n\\n        _worldId.verifyProof(\\n            root,\\n            _groupId,\\n            abi.encodePacked(msg.sender).hashToField(),\\n            nullifierHash,\\n            abi.encodePacked(address(this)).hashToField(),\\n            proof\\n        );\\n\\n        if (_callerHash == 0) {\\n            // Assign nullfierHash to owner (and vice versa)\\n            _hashToAddress[nullifierHash] = msg.sender;\\n            _addressToHash[msg.sender] = nullifierHash;\\n        }\\n    }\\n\\n    function isAddressAssociated(address owner) public view returns (bool) {\\n        return _addressToHash[owner] != 0;\\n    }\\n}\\n\",\"keccak256\":\"0x27b1735cfe75025c51e3c8fb7434dc49531f30ed1787936a342e21dabfddf105\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x60c0604052600160a05234801561001557600080fd5b5060405161015f38038061015f83398101604081905261003491610045565b6001600160a01b0316608052610075565b60006020828403121561005757600080fd5b81516001600160a01b038116811461006e57600080fd5b9392505050565b60805160a05160cd610092600039600050506000505060cd6000f3fe6080604052348015600f57600080fd5b506004361060285760003560e01c806308f8343a14602d575b600080fd5b605560383660046069565b6001600160a01b0316600090815260016020526040902054151590565b604051901515815260200160405180910390f35b600060208284031215607a57600080fd5b81356001600160a01b0381168114609057600080fd5b939250505056fea2646970667358221220b94ec66e67b29bd7b18c8fbec29724e34b93844023efe6a605fd6ad4316c217764736f6c634300080a0033",
+  "deployedBytecode": "0x6080604052348015600f57600080fd5b506004361060285760003560e01c806308f8343a14602d575b600080fd5b605560383660046069565b6001600160a01b0316600090815260016020526040902054151590565b604051901515815260200160405180910390f35b600060208284031215607a57600080fd5b81356001600160a01b0381168114609057600080fd5b939250505056fea2646970667358221220b94ec66e67b29bd7b18c8fbec29724e34b93844023efe6a605fd6ad4316c217764736f6c634300080a0033",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {
+      "constructor": {
+        "details": "worldId is take from `https://developer.worldcoin.org/api/v1/contracts`",
+        "params": {
+          "_worldId_": "The WorldID instance that will manage groups and verify proofs"
+        }
+      }
+    },
+    "stateVariables": {
+      "_addressToHash": {
+        "details": "Reverse lookup of _hashToAddress"
+      },
+      "_groupId": {
+        "details": "The ID of the Semaphore group \"World ID\" (always 1)"
+      },
+      "_hashToAddress": {
+        "details": "Maps from nullitiferHash to address. Used to prevent double-signaling"
+      },
+      "_worldId": {
+        "details": "The WorldID instance that will be used for managing groups and verifying proofs"
+      }
+    },
+    "version": 1
+  },
+  "userdoc": {
+    "errors": {
+      "AlreadyAssociated()": [
+        {
+          "notice": "Thrown when attempting to associate an address again"
+        }
+      ],
+      "InvalidNullifier()": [
+        {
+          "notice": "Thrown when attempting to reuse a nullifier"
+        }
+      ],
+      "Unauthorized()": [
+        {
+          "notice": "Thrown when trying to update the airdrop amount without being the manager"
+        }
+      ]
+    },
+    "kind": "user",
+    "methods": {
+      "constructor": {
+        "notice": "Deploys a WorldIDAirdrop instance"
+      }
+    },
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 2964,
+        "contract": "contracts/worldid-verification/WorldIDRegistry.sol:WorldIDRegistry",
+        "label": "_hashToAddress",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_mapping(t_uint256,t_address)"
+      },
+      {
+        "astId": 2969,
+        "contract": "contracts/worldid-verification/WorldIDRegistry.sol:WorldIDRegistry",
+        "label": "_addressToHash",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_mapping(t_address,t_uint256)"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_mapping(t_address,t_uint256)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => uint256)",
+        "numberOfBytes": "32",
+        "value": "t_uint256"
+      },
+      "t_mapping(t_uint256,t_address)": {
+        "encoding": "mapping",
+        "key": "t_uint256",
+        "label": "mapping(uint256 => address)",
+        "numberOfBytes": "32",
+        "value": "t_address"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}
