@@ -36,7 +36,6 @@ contract WorldIDRegistry {
     }
 
     function register(
-        address owner,
         uint256 root,
         uint256 nullifierHash,
         uint256[8] calldata proof
@@ -45,20 +44,20 @@ contract WorldIDRegistry {
         if (_registry[nullifierHash] != address(0)) revert InvalidNullifier();
 
         // Address can only be associated once
-        if (_owners[owner] != 0) revert AlreadyAssociated();
+        if (_owners[msg.sender] != 0) revert AlreadyAssociated();
 
         worldId.verifyProof(
             root,
             groupId,
-            abi.encodePacked(owner).hashToField(),
+            abi.encodePacked(msg.sender).hashToField(),
             nullifierHash,
             abi.encodePacked(address(this)).hashToField(),
             proof
         );
 
         // Assign nullfierHash to owner (and vice versa)
-        _registry[nullifierHash] = owner;
-        _owners[owner] = nullifierHash;
+        _registry[nullifierHash] = msg.sender;
+        _owners[msg.sender] = nullifierHash;
     }
 
     function isAddressAssociated(address owner) public view returns (bool) {
